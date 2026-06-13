@@ -1,0 +1,236 @@
+.layout {
+  display: grid;
+  grid-template-rows: 42px 1fr 180px;
+  height: 100vh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  overflow: hidden;
+}
+
+/* Top bar */
+.topbar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 0.75rem;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  gap: 0.5rem;
+}
+
+.topbarLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.topbarCenter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.topbarRight {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.logoBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+  border-radius: var(--radius-sm);
+  transition: background 0.15s;
+}
+
+.logoBtn:hover {
+  background-color: rgba(108, 61, 224, 0.2);
+}
+
+.logoSymbol {
+  font-size: 1.2rem;
+  color: var(--color-primary);
+}
+
+.projectName {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.projectVersion {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* Workspace */
+.workspace {
+  display: grid;
+  grid-template-columns: 240px 1fr 260px;
+  overflow: hidden;
+}
+
+/* Panels */
+.panelLeft {
+  border-right: 1px solid var(--color-border);
+}
+
+.panelRight {
+  border-left: 1px solid var(--color-border);
+}
+
+/* Lists */
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.listItem {
+  font-size: 0.82rem;
+  color: var(--color-text);
+  padding: 0.3rem 0.4rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.listItem:hover {
+  background-color: rgba(108, 61, 224, 0.12);
+}
+
+.subList {
+  list-style: none;
+  width: 100%;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-top: 1px;
+}
+
+.sceneIcon {
+  color: var(--color-primary);
+  font-size: 0.75rem;
+}
+
+.objIcon {
+  color: var(--color-text-muted);
+  font-size: 0.65rem;
+}
+
+.empty {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 1rem 0;
+}
+
+/* Viewport */
+.viewport {
+  background-color: #080810;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.viewportPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+.viewportIcon {
+  font-size: 2.5rem;
+  color: var(--color-border);
+  line-height: 1;
+}
+
+.viewportSub {
+  font-size: 0.75rem;
+  color: var(--color-border);
+}
+
+/* Bottom bar */
+.bottombar {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  overflow: hidden;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tab:hover {
+  color: var(--color-text);
+}
+
+.tabActive {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-primary);
+}
+
+.assetList {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.assetChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.2rem 0.55rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.assetChip:hover {
+  border-color: var(--color-primary);
+}
+
+.assetType {
+  font-style: normal;
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+}
