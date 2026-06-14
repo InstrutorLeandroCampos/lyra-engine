@@ -1,0 +1,218 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ── header: breadcrumb + actions ───────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.75rem;
+  height: 28px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--color-border);
+  gap: 0.5rem;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  overflow: hidden;
+  min-width: 0;
+}
+
+.crumb {
+  background: none;
+  border: none;
+  padding: 0.1rem 0.25rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  white-space: nowrap;
+  transition: color 0.1s, background 0.1s;
+}
+
+.crumb:hover {
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.crumbActive {
+  color: var(--color-text);
+  cursor: default;
+}
+
+.crumbSep {
+  color: var(--color-border);
+  flex-shrink: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 0.15rem 0.45rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color 0.1s, border-color 0.1s, background 0.1s;
+  white-space: nowrap;
+}
+
+.actionBtn:hover {
+  color: var(--color-text);
+  border-color: var(--color-border);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.actionBtnPrimary {
+  color: var(--color-accent);
+  border-color: rgba(108, 61, 224, 0.35);
+}
+
+.actionBtnPrimary:hover {
+  color: var(--color-accent);
+  border-color: var(--color-primary);
+  background: rgba(108, 61, 224, 0.1);
+}
+
+/* ── asset grid ─────────────────────────────────────────────────────────────── */
+.grid {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 4px;
+  padding: 6px 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.empty {
+  width: 100%;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 1rem 0;
+  align-self: center;
+}
+
+/* ── grid item ───────────────────────────────────────────────────────────────── */
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  width: 72px;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.1s, background 0.1s;
+}
+
+.item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--color-border);
+}
+
+.itemSelected {
+  background: rgba(108, 61, 224, 0.12);
+  border-color: var(--color-primary);
+}
+
+/* thumbnail for image assets */
+.thumbnail {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  border-radius: 3px;
+  border: 1px solid var(--color-border);
+  background: repeating-conic-gradient(#1e1e2e 0% 25%, #28283d 0% 50%) 0 0 / 8px 8px;
+  flex-shrink: 0;
+}
+
+/* icon for folders and non-image types */
+.iconBox {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  border-radius: 3px;
+  border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.02);
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+}
+
+.iconBoxFolder {
+  color: #c8a53a;
+}
+
+.itemName {
+  font-size: 0.6rem;
+  color: var(--color-text);
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.3;
+}
+
+/* ── new folder dialog ───────────────────────────────────────────────────────── */
+.folderDialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 100;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  min-width: 200px;
+}
+
+.folderDialogTitle {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.folderDialogInput {
+  padding: 0.35rem 0.5rem;
+  font-size: 0.78rem;
+  border-radius: var(--radius-sm);
+}
+
+.folderDialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.4rem;
+}
