@@ -1,0 +1,197 @@
+/*
+  Panel.body já tem padding: 0.5rem.
+  Usamos margin negativa para que os separadores vão de borda a borda,
+  e re-aplicamos padding horizontal apenas no conteúdo de cada seção.
+*/
+.inspector {
+  margin: -0.5rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.empty {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 1.5rem 0.75rem;
+}
+
+/* ── Object header ─────────────────────────────────────────────────────────── */
+
+.objectHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.activeToggle input[type='checkbox'] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.nameInput {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+  font-family: inherit;
+  color: var(--color-text);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 0.15rem 0.3rem;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.nameInput:hover {
+  border-color: var(--color-border);
+}
+
+.nameInput:focus {
+  border-color: var(--color-primary);
+  background-color: var(--color-bg);
+  box-shadow: 0 0 0 1px rgba(108, 61, 224, 0.2);
+}
+
+/* ── Sections ──────────────────────────────────────────────────────────────── */
+
+.section {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+.sectionTitle {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ── Field groups ──────────────────────────────────────────────────────────── */
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.fieldGroupLabel {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+/* Single-field rows (Rotation) */
+.fieldRow > :only-child {
+  grid-column: 1 / -1;
+  max-width: 50%;
+}
+
+/* ── Number field ──────────────────────────────────────────────────────────── */
+
+.field {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+
+.field:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px rgba(108, 61, 224, 0.2);
+}
+
+.fieldLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  padding: 0 0.3rem;
+  background-color: rgba(255, 255, 255, 0.03);
+  border-right: 1px solid var(--color-border);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.fieldInput {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--color-text);
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  padding: 0.3rem 0.35rem;
+}
+
+.fieldInput::-webkit-inner-spin-button,
+.fieldInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+/* ── Tags ──────────────────────────────────────────────────────────────────── */
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.tag {
+  font-size: 0.7rem;
+  color: var(--color-accent);
+  background-color: rgba(108, 61, 224, 0.15);
+  border: 1px solid rgba(108, 61, 224, 0.35);
+  border-radius: var(--radius-sm);
+  padding: 0.15rem 0.45rem;
+}
+
+/* ── Components ────────────────────────────────────────────────────────────── */
+
+.noComponents {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.component {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.6rem;
+}
+
+.componentType {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
