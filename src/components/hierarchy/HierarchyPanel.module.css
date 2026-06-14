@@ -1,0 +1,99 @@
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sceneRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.4rem;
+  border-radius: var(--radius-sm);
+}
+
+.sceneIcon {
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.sceneName {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.subList {
+  list-style: none;
+  padding-left: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-top: 1px;
+}
+
+.objRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.4rem;
+  border-radius: var(--radius-sm);
+  min-height: 1.8rem;
+}
+
+.objRow:hover {
+  background-color: rgba(108, 61, 224, 0.1);
+}
+
+.objRowSelected {
+  background-color: rgba(108, 61, 224, 0.22);
+}
+
+.objRowSelected:hover {
+  background-color: rgba(108, 61, 224, 0.28);
+}
+
+.objRowSelected .objName {
+  color: var(--color-accent);
+}
+
+.objIcon {
+  color: var(--color-text-muted);
+  font-size: 0.65rem;
+  flex-shrink: 0;
+}
+
+.objName {
+  font-size: 0.82rem;
+  color: var(--color-text);
+  cursor: default;
+  border-radius: var(--radius-sm);
+  padding: 0.05rem 0.2rem;
+}
+
+.objName:hover {
+  color: var(--color-accent);
+}
+
+.renameInput {
+  flex: 1;
+  font-size: 0.82rem;
+  font-family: inherit;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  padding: 0.1rem 0.35rem;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(108, 61, 224, 0.25);
+  min-width: 0;
+}
+
+.empty {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 1rem 0;
+}

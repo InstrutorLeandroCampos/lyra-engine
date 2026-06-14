@@ -3,6 +3,8 @@ import { VscHome, VscSave, VscPlay } from 'react-icons/vsc'
 import { useProject } from '../../context/ProjectContext'
 import Button from '../../components/button/Button'
 import Panel from '../../components/panel/Panel'
+import HierarchyPanel from '../../components/hierarchy/HierarchyPanel'
+import InspectorPanel from '../../components/inspector/InspectorPanel'
 import Viewport from '../../components/viewport/Viewport'
 import styles from './Editor.module.css'
 
@@ -49,28 +51,7 @@ function Editor() {
 
         {/* Hierarchy panel */}
         <Panel title="Hierarchy" className={styles.panelLeft}>
-          {project.scenes.length === 0 ? (
-            <p className={styles.empty}>No objects</p>
-          ) : (
-            <ul className={styles.list}>
-              {project.scenes.map((scene) => (
-                <li key={scene.id} className={styles.listItem}>
-                  <span className={styles.sceneIcon}>◎</span>
-                  {scene.name}
-                  {scene.gameObjects.length > 0 && (
-                    <ul className={styles.subList}>
-                      {scene.gameObjects.map((obj) => (
-                        <li key={obj.id} className={styles.listItem}>
-                          <span className={styles.objIcon}>▸</span>
-                          {obj.name}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              ))}
-            </ul>
-          )}
+          <HierarchyPanel scenes={project.scenes} />
         </Panel>
 
         {/* Viewport */}
@@ -80,7 +61,7 @@ function Editor() {
 
         {/* Inspector panel */}
         <Panel title="Inspector" className={styles.panelRight}>
-          <p className={styles.empty}>Select an object</p>
+          <InspectorPanel />
         </Panel>
 
       </div>
