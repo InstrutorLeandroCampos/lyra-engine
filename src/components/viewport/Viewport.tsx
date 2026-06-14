@@ -392,22 +392,39 @@ function Viewport({ project }: ViewportProps) {
       const targetAssetId = (sprComp?.assetId as string | null | undefined) ?? null
       if (entry.renderedAssetId !== targetAssetId) {
         // remove current visual (always at index 0, before selection rect)
-        if (entry.container.children[0] && entry.container.children[0] !== entry.selection) {
+        if (entry.container.children.length > 0 && entry.container.children[0] !== entry.selection) {
           entry.container.removeChildAt(0).destroy()
         }
+        // commit immediately so subsequent syncs don't double-trigger
+        entry.renderedAssetId = targetAssetId
+
         if (targetAssetId) {
           const asset = project.assets.find((a) => a.id === targetAssetId)
           if (asset?.type === 'image') {
-            const sprite = new Sprite(Texture.from(asset.path))
-            sprite.anchor.set(0.5)
-            entry.container.addChildAt(sprite, 0)
+            // show placeholder while the image element decodes the data URL
+            entry.container.addChildAt(makePlaceholder(), 0)
+            const capturedId = targetAssetId
+            const capturedEntry = entry
+            const img = new Image()
+            function onLoaded() {
+              if (capturedEntry.renderedAssetId !== capturedId) return
+              if (capturedEntry.container.destroyed) return
+              if (capturedEntry.container.children.length > 0 && capturedEntry.container.children[0] !== capturedEntry.selection) {
+                capturedEntry.container.removeChildAt(0).destroy()
+              }
+              const sprite = new Sprite(Texture.from(img))
+              sprite.anchor.set(0.5)
+              capturedEntry.container.addChildAt(sprite, 0)
+            }
+            img.src = asset.path
+            if (img.complete) onLoaded()
+            else img.onload = onLoaded
           } else {
             entry.container.addChildAt(makePlaceholder(), 0)
           }
         } else {
           entry.container.addChildAt(makePlaceholder(), 0)
         }
-        entry.renderedAssetId = targetAssetId
       }
 
       applyTf(entry.container, obj.transform)
