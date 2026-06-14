@@ -178,20 +178,135 @@
 
 /* ── Components ────────────────────────────────────────────────────────────── */
 
-.noComponents {
-  font-size: 0.78rem;
-  color: var(--color-text-muted);
-}
-
 .component {
   background-color: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
-  padding: 0.4rem 0.6rem;
+  overflow: hidden;
+}
+
+.componentHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.35rem 0.6rem;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .componentType {
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 700;
   color: var(--color-text);
+}
+
+.removeComp {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 2px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: color 0.1s, background 0.1s;
+}
+
+.removeComp:hover {
+  color: #ff6060;
+  background: rgba(255, 96, 96, 0.1);
+}
+
+.componentBody {
+  padding: 0.4rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.fieldSelect {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--color-text);
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  padding: 0.3rem 0.35rem;
+  cursor: pointer;
+}
+
+.checkRow {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkRow input[type='checkbox'] {
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+/* ── Add component ─────────────────────────────────────────────────────────── */
+
+.addCompWrap {
+  position: relative;
+}
+
+.addCompBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  padding: 0.35rem;
+  background: none;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: color 0.1s, border-color 0.1s, background 0.1s;
+}
+
+.addCompBtn:hover {
+  color: var(--color-accent);
+  border-color: var(--color-primary);
+  background: rgba(108, 61, 224, 0.06);
+}
+
+.addCompMenu {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  z-index: 50;
+}
+
+.addCompItem {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0.45rem 0.75rem;
+  text-align: left;
+  font-size: 0.78rem;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.addCompItem:hover {
+  background: rgba(108, 61, 224, 0.12);
+  color: var(--color-accent);
 }
