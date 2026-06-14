@@ -47,11 +47,14 @@ export interface ProjectSettings {
   resolution: { width: number; height: number }
   backgroundColor: string
   targetFps: number
+  pixelArt: boolean
   gravity?: { x: number; y: number }
 }
 
 export interface Project {
   name: string
+  description: string
+  authors: string[]
   version: string
   engineVersion: string
   createdAt: string
