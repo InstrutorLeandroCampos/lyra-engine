@@ -1,10 +1,12 @@
 import type { GameObject } from './GameObject'
 
 /**
- * Base class for all components. Subclass and override the lifecycle hooks
- * you need; unoverridden hooks are no-ops.
+ * Base class for all components. Subclass and override only the hooks you need;
+ * everything is a no-op by default.
  *
  * `gameObject` is injected by `GameObject.addComponent` before any hook fires.
+ * Since `GameObject` extends PixiJS `Container`, `this.gameObject` gives direct
+ * access to the PixiJS scene-graph node (position, scale, addChild, etc.).
  */
 export abstract class Component {
   // Injected by addComponent — treat as readonly after construction.
@@ -42,6 +44,13 @@ export abstract class Component {
   /** Called every frame after all `update` calls have completed. */
   lateUpdate(_dt: number): void {}
 
+  /**
+   * Called by the PixiJS ticker every frame, just before PixiJS renders.
+   * Override to imperatively update PixiJS display objects owned by this
+   * component (e.g. reposition a Sprite, update a Graphics mesh, etc.).
+   */
+  onRender(): void {}
+
   /** Called when the component or its game object is enabled. */
   onEnable(): void {}
 
@@ -50,8 +59,4 @@ export abstract class Component {
 
   /** Called just before the component is removed or its game object is destroyed. */
   onDestroy(): void {}
-
-  /** Called each render pass. Override to perform custom 2D canvas drawing.
-   *  @param ctx  The 2D rendering context for the current frame. */
-  draw(_ctx: CanvasRenderingContext2D): void {}
 }
