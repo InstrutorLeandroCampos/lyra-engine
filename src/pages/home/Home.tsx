@@ -1,10 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { VscNewFile, VscFolderOpened } from 'react-icons/vsc'
 import Button from '../../components/button/Button'
 import Card from '../../components/card/Card'
+import NewProjectModal from '../../components/modal/NewProjectModal'
 import { useProject } from '../../context/ProjectContext'
 import { useOpenProject } from '../../hooks/useOpenProject'
+import { Project } from '../../types/project'
 import styles from './Home.module.css'
 
 const recentProjects = [
@@ -74,10 +76,16 @@ function Home() {
   const { state, dispatch } = useProject()
   const { open, inputRef, handleFileChange } = useOpenProject()
   const navigate = useNavigate()
+  const [isNewProjectOpen, setIsNewProjectOpen] = useState(false)
 
   useEffect(() => {
     if (state.isLoaded) navigate('/editor')
   }, [state.isLoaded, navigate])
+
+  function handleCreateProject(project: Project) {
+    dispatch({ type: 'LOAD_PROJECT', payload: project })
+    setIsNewProjectOpen(false)
+  }
 
   return (
     <div className={styles.page}>
@@ -89,6 +97,13 @@ function Home() {
         accept=".json"
         style={{ display: 'none' }}
         onChange={handleFileChange}
+      />
+
+      {/* New project modal */}
+      <NewProjectModal
+        open={isNewProjectOpen}
+        onClose={() => setIsNewProjectOpen(false)}
+        onConfirm={handleCreateProject}
       />
 
       {/* Error banner */}
@@ -110,7 +125,7 @@ function Home() {
 
       {/* New project / Open project */}
       <section className={styles.actions}>
-        <Button variant="primary" size="lg" leftIcon={<VscNewFile />}>
+        <Button variant="primary" size="lg" leftIcon={<VscNewFile />} onClick={() => setIsNewProjectOpen(true)}>
           New Project
         </Button>
         <Button variant="secondary" size="lg" leftIcon={<VscFolderOpened />} onClick={open}>
