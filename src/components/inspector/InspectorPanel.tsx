@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Transform } from '../../types/project'
+import { Scene, GameObject, Transform } from '../../types/project'
 import { useProject } from '../../context/ProjectContext'
 import styles from './InspectorPanel.module.css'
 
-// ── Number field with local string state ──────────────────────────────────────
+/* ── Number field ────────────────────────────────────────────────────────────── */
 
 interface NumberFieldProps {
   label: string
@@ -37,28 +37,17 @@ function NumberField({ label, value, onChange }: NumberFieldProps) {
   )
 }
 
-// ── Inspector ─────────────────────────────────────────────────────────────────
+/* ── Object inspector (rendered only when an object is selected) ─────────────── */
 
-function InspectorPanel() {
-  const { state, dispatch } = useProject()
-  const { selectedObjectId, project } = state
+interface ObjectInspectorProps {
+  scene: Scene
+  obj: GameObject
+}
 
-  const found = useMemo(() => {
-    if (!project || !selectedObjectId) return null
-    for (const scene of project.scenes) {
-      const obj = scene.gameObjects.find((o) => o.id === selectedObjectId)
-      if (obj) return { scene, obj }
-    }
-    return null
-  }, [project, selectedObjectId])
-
-  if (!found) {
-    return <p className={styles.empty}>Select an object</p>
-  }
-
-  const { scene, obj } = found
-
+function ObjectInspector({ scene, obj }: ObjectInspectorProps) {
+  const { dispatch } = useProject()
   const [localName, setLocalName] = useState(obj.name)
+
   useEffect(() => { setLocalName(obj.name) }, [obj.name])
 
   function commitName() {
@@ -74,7 +63,10 @@ function InspectorPanel() {
   }
 
   function updateTransform(partial: Partial<Transform>) {
-    dispatch({ type: 'UPDATE_GAME_OBJECT_TRANSFORM', payload: { objectId: obj.id, transform: partial } })
+    dispatch({
+      type: 'UPDATE_GAME_OBJECT_TRANSFORM',
+      payload: { objectId: obj.id, transform: partial },
+    })
   }
 
   return (
@@ -86,7 +78,9 @@ function InspectorPanel() {
           <input
             type="checkbox"
             checked={obj.active}
-            onChange={() => dispatch({ type: 'TOGGLE_GAME_OBJECT_ACTIVE', payload: { objectId: obj.id } })}
+            onChange={() =>
+              dispatch({ type: 'TOGGLE_GAME_OBJECT_ACTIVE', payload: { objectId: obj.id } })
+            }
           />
         </label>
         <input
@@ -109,8 +103,8 @@ function InspectorPanel() {
         <div className={styles.fieldGroup}>
           <span className={styles.fieldGroupLabel}>Position</span>
           <div className={styles.fieldRow}>
-            <NumberField label="X" value={obj.transform.x} onChange={(v) => updateTransform({ x: v })} />
-            <NumberField label="Y" value={obj.transform.y} onChange={(v) => updateTransform({ y: v })} />
+            <NumberField label="X" value={obj.transform.x}  onChange={(v) => updateTransform({ x: v })} />
+            <NumberField label="Y" value={obj.transform.y}  onChange={(v) => updateTransform({ y: v })} />
           </div>
         </div>
 
@@ -135,7 +129,9 @@ function InspectorPanel() {
             <NumberField
               label="Z"
               value={obj.zOrder}
-              onChange={(v) => dispatch({ type: 'UPDATE_GAME_OBJECT_ZORDER', payload: { objectId: obj.id, zOrder: Math.round(v) } })}
+              onChange={(v) =>
+                dispatch({ type: 'UPDATE_GAME_OBJECT_ZORDER', payload: { objectId: obj.id, zOrder: Math.round(v) } })
+              }
             />
           </div>
         </div>
@@ -169,6 +165,28 @@ function InspectorPanel() {
 
     </div>
   )
+}
+
+/* ── Inspector panel ─────────────────────────────────────────────────────────── */
+
+function InspectorPanel() {
+  const { state } = useProject()
+  const { selectedObjectId, project } = state
+
+  const found = useMemo(() => {
+    if (!project || !selectedObjectId) return null
+    for (const scene of project.scenes) {
+      const obj = scene.gameObjects.find((o) => o.id === selectedObjectId)
+      if (obj) return { scene, obj }
+    }
+    return null
+  }, [project, selectedObjectId])
+
+  if (!found) {
+    return <p className={styles.empty}>Select an object</p>
+  }
+
+  return <ObjectInspector scene={found.scene} obj={found.obj} />
 }
 
 export default InspectorPanel
