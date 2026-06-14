@@ -15,6 +15,7 @@ export interface GameObject {
   id: string
   name: string
   active: boolean
+  zOrder: number
   transform: Transform
   components: Component[]
   children: GameObject[]
