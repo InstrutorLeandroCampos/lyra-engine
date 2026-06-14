@@ -3,6 +3,7 @@ import { VscHome, VscSave, VscPlay } from 'react-icons/vsc'
 import { useProject } from '../../context/ProjectContext'
 import Button from '../../components/button/Button'
 import Panel from '../../components/panel/Panel'
+import Viewport from '../../components/viewport/Viewport'
 import styles from './Editor.module.css'
 
 function Editor() {
@@ -74,13 +75,7 @@ function Editor() {
 
         {/* Viewport */}
         <main className={styles.viewport}>
-          <div className={styles.viewportPlaceholder}>
-            <span className={styles.viewportIcon}>◈</span>
-            <p>Viewport</p>
-            <p className={styles.viewportSub}>
-              {project.settings.resolution.width} × {project.settings.resolution.height} · {project.settings.targetFps} fps
-            </p>
-          </div>
+          <Viewport project={project} />
         </main>
 
         {/* Inspector panel */}
