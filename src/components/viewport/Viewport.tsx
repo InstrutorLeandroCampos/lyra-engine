@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Application, Container, Graphics, TextureSource } from 'pixi.js'
+import { Application, Container, Graphics, Sprite, Texture, TextureSource } from 'pixi.js'
 import {
   VscAdd,
   VscZoomIn,
@@ -38,6 +38,7 @@ interface DragState {
 interface ObjEntry {
   container: Container
   selection: Graphics
+  renderedAssetId: string | null  // asset currently shown (null = placeholder)
 }
 
 /* ── PixiJS helpers ────────────────────────────────────────────────────────── */
@@ -382,9 +383,33 @@ function Viewport({ project }: ViewportProps) {
           dispatch({ type: 'SELECT_GAME_OBJECT', payload: id })
         })
         worldLayer.addChild(container)
-        entry = { container, selection }
+        entry = { container, selection, renderedAssetId: null }
         objectMap.set(id, entry)
       }
+
+      // update visual based on SpriteRenderer component
+      const sprComp = obj.components.find((c) => c.type === 'SpriteRenderer')
+      const targetAssetId = (sprComp?.assetId as string | null | undefined) ?? null
+      if (entry.renderedAssetId !== targetAssetId) {
+        // remove current visual (always at index 0, before selection rect)
+        if (entry.container.children[0] && entry.container.children[0] !== entry.selection) {
+          entry.container.removeChildAt(0).destroy()
+        }
+        if (targetAssetId) {
+          const asset = project.assets.find((a) => a.id === targetAssetId)
+          if (asset?.type === 'image') {
+            const sprite = new Sprite(Texture.from(asset.path))
+            sprite.anchor.set(0.5)
+            entry.container.addChildAt(sprite, 0)
+          } else {
+            entry.container.addChildAt(makePlaceholder(), 0)
+          }
+        } else {
+          entry.container.addChildAt(makePlaceholder(), 0)
+        }
+        entry.renderedAssetId = targetAssetId
+      }
+
       applyTf(entry.container, obj.transform)
       entry.container.zIndex = obj.zOrder
       entry.selection.visible = id === selId
