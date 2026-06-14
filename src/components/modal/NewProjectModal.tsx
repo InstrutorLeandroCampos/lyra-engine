@@ -68,6 +68,7 @@ function NewProjectModal({ open, onClose, onConfirm }: NewProjectModalProps) {
       updatedAt: now,
       scenes: [],
       assets: [],
+      assetFolders: [],
       scripts: [],
       settings: {
         resolution: { width, height },

@@ -1,6 +1,6 @@
 .layout {
   display: grid;
-  grid-template-rows: 42px 1fr 180px;
+  grid-template-rows: 42px 1fr 200px;
   height: 100vh;
   background-color: var(--color-bg);
   color: var(--color-text);
@@ -124,37 +124,16 @@
   border-bottom-color: var(--color-primary);
 }
 
-.assetList {
+.tabContent {
   flex: 1;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
+  flex-direction: column;
 }
 
-.assetChip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
+.empty {
   font-size: 0.78rem;
-  color: var(--color-text);
-  background-color: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 0.2rem 0.55rem;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: border-color 0.15s;
-}
-
-.assetChip:hover {
-  border-color: var(--color-primary);
-}
-
-.assetType {
-  font-style: normal;
-  font-size: 0.68rem;
   color: var(--color-text-muted);
+  padding: 1rem 0.75rem;
+  align-self: center;
 }

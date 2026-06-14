@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { VscHome, VscSave, VscPlay } from 'react-icons/vsc'
 import { useProject } from '../../context/ProjectContext'
@@ -6,12 +7,16 @@ import Panel from '../../components/panel/Panel'
 import HierarchyPanel from '../../components/hierarchy/HierarchyPanel'
 import InspectorPanel from '../../components/inspector/InspectorPanel'
 import Viewport from '../../components/viewport/Viewport'
+import AssetPanel from '../../components/assets/AssetPanel'
 import styles from './Editor.module.css'
+
+type BottomTab = 'assets' | 'scripts' | 'console'
 
 function Editor() {
   const { state, dispatch } = useProject()
   const navigate = useNavigate()
   const { project } = state
+  const [activeTab, setActiveTab] = useState<BottomTab>('assets')
 
   function handleClose() {
     dispatch({ type: 'CLOSE_PROJECT' })
@@ -69,20 +74,33 @@ function Editor() {
       {/* Bottom bar */}
       <footer className={styles.bottombar}>
         <div className={styles.tabs}>
-          <button className={`${styles.tab} ${styles.tabActive}`}>Assets ({project.assets.length})</button>
-          <button className={styles.tab}>Scripts ({project.scripts.length})</button>
-          <button className={styles.tab}>Console</button>
+          <button
+            className={`${styles.tab} ${activeTab === 'assets' ? styles.tabActive : ''}`}
+            onClick={() => setActiveTab('assets')}
+          >
+            Assets ({project.assets.length})
+          </button>
+          <button
+            className={`${styles.tab} ${activeTab === 'scripts' ? styles.tabActive : ''}`}
+            onClick={() => setActiveTab('scripts')}
+          >
+            Scripts ({project.scripts.length})
+          </button>
+          <button
+            className={`${styles.tab} ${activeTab === 'console' ? styles.tabActive : ''}`}
+            onClick={() => setActiveTab('console')}
+          >
+            Console
+          </button>
         </div>
-        <div className={styles.assetList}>
-          {project.assets.length === 0 ? (
-            <span className={styles.empty}>No assets</span>
-          ) : (
-            project.assets.map((asset) => (
-              <span key={asset.id} className={styles.assetChip}>
-                {asset.name}
-                <em className={styles.assetType}>{asset.type}</em>
-              </span>
-            ))
+
+        <div className={styles.tabContent}>
+          {activeTab === 'assets' && <AssetPanel />}
+          {activeTab === 'scripts' && (
+            <span className={styles.empty}>Scripts panel coming soon</span>
+          )}
+          {activeTab === 'console' && (
+            <span className={styles.empty}>Console coming soon</span>
           )}
         </div>
       </footer>
