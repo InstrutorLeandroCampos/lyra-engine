@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer, ReactNode } from 'react'
-import { Project, Scene, GameObject, Transform } from '../types/project'
+import { Project, Scene, GameObject, Component, Transform, Asset } from '../types/project'
 
 interface ProjectState {
   project: Project | null
@@ -21,6 +21,12 @@ type ProjectAction =
   | { type: 'TOGGLE_GAME_OBJECT_ACTIVE'; payload: { objectId: string } }
   | { type: 'UPDATE_GAME_OBJECT_TRANSFORM'; payload: { objectId: string; transform: Partial<Transform> } }
   | { type: 'UPDATE_GAME_OBJECT_ZORDER'; payload: { objectId: string; zOrder: number } }
+  | { type: 'ADD_COMPONENT'; payload: { objectId: string; component: Component } }
+  | { type: 'REMOVE_COMPONENT'; payload: { objectId: string; componentIndex: number } }
+  | { type: 'UPDATE_COMPONENT'; payload: { objectId: string; componentIndex: number; data: Partial<Component> } }
+  | { type: 'IMPORT_ASSET'; payload: Asset }
+  | { type: 'DELETE_ASSET'; payload: { assetId: string } }
+  | { type: 'CREATE_ASSET_FOLDER'; payload: { path: string } }
 
 const initialState: ProjectState = {
   project: null,
@@ -45,14 +51,21 @@ function updateObjectInScenes(
 
 function projectReducer(state: ProjectState, action: ProjectAction): ProjectState {
   switch (action.type) {
-    case 'LOAD_PROJECT':
+    case 'LOAD_PROJECT': {
+      const p = action.payload
       return {
-        project: action.payload,
+        project: {
+          ...p,
+          // migrate: ensure every asset has a folder field
+          assets: p.assets.map((a) => ({ ...a, folder: a.folder ?? '/' })),
+          assetFolders: p.assetFolders ?? [],
+        },
         isLoaded: true,
-        activeSceneId: action.payload.scenes[0]?.id ?? null,
+        activeSceneId: p.scenes[0]?.id ?? null,
         selectedObjectId: null,
         error: null,
       }
+    }
 
     case 'CLOSE_PROJECT':
       return initialState
@@ -163,6 +176,90 @@ function projectReducer(state: ProjectState, action: ProjectAction): ProjectStat
             action.payload.objectId,
             (obj) => ({ ...obj, zOrder: action.payload.zOrder }),
           ),
+        },
+      }
+    }
+
+    case 'ADD_COMPONENT': {
+      if (!state.project) return state
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          scenes: updateObjectInScenes(
+            state.project.scenes,
+            action.payload.objectId,
+            (obj) => ({ ...obj, components: [...obj.components, action.payload.component] }),
+          ),
+        },
+      }
+    }
+
+    case 'REMOVE_COMPONENT': {
+      if (!state.project) return state
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          scenes: updateObjectInScenes(
+            state.project.scenes,
+            action.payload.objectId,
+            (obj) => ({
+              ...obj,
+              components: obj.components.filter((_, i) => i !== action.payload.componentIndex),
+            }),
+          ),
+        },
+      }
+    }
+
+    case 'UPDATE_COMPONENT': {
+      if (!state.project) return state
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          scenes: updateObjectInScenes(
+            state.project.scenes,
+            action.payload.objectId,
+            (obj) => ({
+              ...obj,
+              components: obj.components.map((c, i) =>
+                i === action.payload.componentIndex ? { ...c, ...action.payload.data } : c,
+              ),
+            }),
+          ),
+        },
+      }
+    }
+
+    case 'IMPORT_ASSET': {
+      if (!state.project) return state
+      return {
+        ...state,
+        project: { ...state.project, assets: [...state.project.assets, action.payload] },
+      }
+    }
+
+    case 'DELETE_ASSET': {
+      if (!state.project) return state
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          assets: state.project.assets.filter((a) => a.id !== action.payload.assetId),
+        },
+      }
+    }
+
+    case 'CREATE_ASSET_FOLDER': {
+      if (!state.project) return state
+      if (state.project.assetFolders.includes(action.payload.path)) return state
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          assetFolders: [...state.project.assetFolders, action.payload.path],
         },
       }
     }

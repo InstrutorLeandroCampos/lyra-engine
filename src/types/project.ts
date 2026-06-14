@@ -33,7 +33,8 @@ export interface Asset {
   id: string
   name: string
   type: 'image' | 'audio' | 'tilemap' | 'font' | 'json' | 'other'
-  path: string
+  path: string  // base64 data URL for imported assets
+  folder: string // '/' for root, '/sprites/' etc.
   metadata?: Record<string, unknown>
 }
 
@@ -62,6 +63,7 @@ export interface Project {
   updatedAt: string
   scenes: Scene[]
   assets: Asset[]
+  assetFolders: string[]  // explicit folder paths e.g. ['/sprites/', '/audio/']
   scripts: Script[]
   settings: ProjectSettings
 }
