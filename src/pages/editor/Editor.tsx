@@ -49,7 +49,7 @@ function Editor() {
         {/* Hierarchy panel */}
         <Panel title="Hierarchy" className={styles.panelLeft}>
           {project.scenes.length === 0 ? (
-            <p className={styles.empty}>No scenes</p>
+            <p className={styles.empty}>No objects</p>
           ) : (
             <ul className={styles.list}>
               {project.scenes.map((scene) => (
