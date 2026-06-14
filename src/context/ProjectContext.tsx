@@ -15,6 +15,9 @@ type ProjectAction =
   | { type: 'CLEAR_ERROR' }
   | { type: 'SET_ERROR'; payload: string }
   | { type: 'SET_ACTIVE_SCENE'; payload: string }
+  | { type: 'ADD_SCENE'; payload: Scene }
+  | { type: 'RENAME_SCENE'; payload: { sceneId: string; name: string } }
+  | { type: 'DELETE_SCENE'; payload: { sceneId: string } }
   | { type: 'SELECT_GAME_OBJECT'; payload: string | null }
   | { type: 'ADD_GAME_OBJECT'; payload: GameObject }
   | { type: 'RENAME_GAME_OBJECT'; payload: { sceneId: string; objectId: string; name: string } }
@@ -77,7 +80,45 @@ function projectReducer(state: ProjectState, action: ProjectAction): ProjectStat
       return { ...state, error: null }
 
     case 'SET_ACTIVE_SCENE':
-      return { ...state, activeSceneId: action.payload }
+      return { ...state, activeSceneId: action.payload, selectedObjectId: null }
+
+    case 'ADD_SCENE': {
+      if (!state.project) return state
+      return {
+        ...state,
+        activeSceneId: action.payload.id,
+        selectedObjectId: null,
+        project: { ...state.project, scenes: [...state.project.scenes, action.payload] },
+      }
+    }
+
+    case 'RENAME_SCENE': {
+      if (!state.project) return state
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          scenes: state.project.scenes.map((s) =>
+            s.id === action.payload.sceneId ? { ...s, name: action.payload.name } : s,
+          ),
+        },
+      }
+    }
+
+    case 'DELETE_SCENE': {
+      if (!state.project) return state
+      const remaining = state.project.scenes.filter((s) => s.id !== action.payload.sceneId)
+      const newActiveId =
+        state.activeSceneId === action.payload.sceneId
+          ? (remaining[0]?.id ?? null)
+          : state.activeSceneId
+      return {
+        ...state,
+        activeSceneId: newActiveId,
+        selectedObjectId: null,
+        project: { ...state.project, scenes: remaining },
+      }
+    }
 
     case 'SELECT_GAME_OBJECT':
       return { ...state, selectedObjectId: action.payload }
@@ -263,6 +304,9 @@ function projectReducer(state: ProjectState, action: ProjectAction): ProjectStat
         },
       }
     }
+
+    default:
+      return state
   }
 }
 

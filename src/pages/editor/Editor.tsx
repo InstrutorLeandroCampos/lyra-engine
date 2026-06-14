@@ -23,6 +23,14 @@ function Editor() {
     navigate('/')
   }
 
+  function handlePlay() {
+    sessionStorage.setItem(
+      'lyra-play-project',
+      JSON.stringify({ project, activeSceneId: state.activeSceneId }),
+    )
+    window.open('/game', '_blank', 'noopener')
+  }
+
   if (!project) {
     navigate('/')
     return null
@@ -42,7 +50,7 @@ function Editor() {
         </div>
 
         <div className={styles.topbarCenter}>
-          <Button variant="ghost" size="sm" leftIcon={<VscPlay />}>Play</Button>
+          <Button variant="primary" size="sm" leftIcon={<VscPlay />} onClick={handlePlay}>Play</Button>
         </div>
 
         <div className={styles.topbarRight}>
@@ -56,7 +64,7 @@ function Editor() {
 
         {/* Hierarchy panel */}
         <Panel title="Hierarchy" className={styles.panelLeft}>
-          <HierarchyPanel scenes={project.scenes} />
+          <HierarchyPanel />
         </Panel>
 
         {/* Viewport */}
